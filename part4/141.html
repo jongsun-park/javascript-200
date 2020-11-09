@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM 이해하기</title>
+  </head>
+  <body>
+    <div id="div1">hello DOM</div>
+    <ul>
+      <li>list item1</li>
+      <li>list item2</li>
+    </ul>
+    <script>
+      const div1E1 = document.getElementById("div1");
+      console.log(div1E1.innerHTML);
+
+      console.log(div1E1.nodeType);
+      console.log(div1E1.nodeType === Node.ELEMENT_NODE);
+
+      console.log(div1E1.constructor);
+      console.log(div1E1 instanceof HTMLDivElement);
+      console.log(div1E1 instanceof Element);
+      console.log(div1E1 instanceof Node);
+      console.log(Element.prototype);
+      console.log(div1E1.tagName);
+
+      const divE2 = document.querySelector("#div1");
+      console.log(divE2.innerHTML);
+
+      const liEls = document.querySelectorAll("ul li");
+      console.log(liEls.item(0).innerHTML);
+      console.log(liEls.item(1).textContent);
+    </script>
+  </body>
+</html>
