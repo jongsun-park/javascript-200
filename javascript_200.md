@@ -108,3 +108,128 @@ Event Object
 e.stopPropagation(): 상위로 이벤트가 전달 되는 것(버블링)을 막는다
 
 e.preventDefault(): 브라우저 기본 행위 또한 막는다.
+
+## 149 이벤트 위임 처리하기
+
+이벤트가 발생하는 요소의 부모 요소에 이벤트 리스너를 작성하여, 여러 요소를 한번에 관리하기.
+
+- NodeObject.className.indexOf('class'): 이벤트 대상 요소의 클래스 이름 확인
+- NodeObject.closest('TAG'): 부모 요소 중 입력 받은 선택자에 해당하는 가장 가까운 요소 반환.
+- NodeObject.remove(): 해당 요소 삭제
+
+## 150 사용자 이벤트 생성하기
+
+알림 메시지 창 만들기
+
+클릭 -> 알림창 생성 -> 닫기 버튼 -> 알림창 삭제
+
+```js
+// 정의
+const CustomEvent = new CustomEvent( 이벤트 식별자 , {
+  bubbles: true,
+  detail: { 전달하고자 하는 정보 }
+})
+this.dispatchEvent( CustomEvent )
+
+// 사용
+Element.addEventListener( 이벤트식별자, e => console.log(e.detail))
+```
+
+## 151 HTML 폼 활용하기
+
+form 요소는 name 속성을 사용하여 전역 객체의 forms 속성에서 가쟈올 수 있다. form 하위 태그의 경우 form의 element 속성 아래에서 name을 사용하여 가져올 수 있다. 하이픈이 있는 경우 대괄호를 이용하고, 나머지의 경우 온점 연산자로 접근이 가능하다.
+
+- `<form name="formElement">` // document.forms.formElement
+- `<fieldset name="fieldsetElement">` // formObject.elements.fieldsetElement
+- `<input name="inputElement">` // formObject.elements.inputElement
+- `<option name="optionElement">` // formObject.elements.optionElement
+- 입력 받은 값 // inputElement.value
+
+```js
+const orderForm = document.forms["order-form"];
+const userInfo = orderForm.elements["user-info"];
+const productInfo = orderForm.elements["product-info"];
+
+const { userName, tel } = userInfo.elements;
+const { productName, color } = productInfo.elements;
+```
+
+## 152 스크롤 처리하기
+
+offsetTop, offsetLeft: 부모요소 부터 얼마나 떨어져 있는지
+
+pageYOffset: 브라우저 상단에서 얼마나 스크롤이 내려왔는지
+
+```javascript
+window.addEventListner('scroll', () => {
+  if(window.pageYoffset >= nav.offsetTop){
+    nav.classList.add('fixed')
+  }else{
+    nav.classList.remove('fixed)
+  }
+})
+```
+
+## 153 문서 이동하기
+
+전역 객체 location를 사용해서, 현재 페이지에 대한 정보를 얻거나, 페이지를 원하는 url로 이동할 수 있다.
+
+property: host, hostname, href, origin, pathname, port, protocol
+
+method: assign (`location.assign('https://naver.com'`)
+
+## 154 브라우저 히스토리 이해하기
+
+window interface "popstate event"
+
+- 사용자의 세션 기록 탐색으로 인해 현재 활성화된 기록 항목이 바뀔때 발생
+- 발생 하는 경우: 브라우저 뒤로 가기 버튼, history.back(), history.forward(), history.go(숫자)
+- 발생 하지 않는 경우: history.pushState(), history.replace()
+
+`history.pushState(state, title [, url])`
+`history.replaceState(state, title [, url])`
+
+- state: 현재 히스토리 상태 (history.state)
+- title: 브라우저 상단 타이들 변경 (대부분 브라우저 미구현)
+- url: 새로운 히스토리 url
+
+```javascript
+const userList = document.querySelector(".user-list");
+
+userList.addEventListener("click", (e) => {
+  const liEl = e.target;
+  if (liEl.tagName === "LI") {
+    const name = liEl.dataset.name; // data-name="jay"
+    // console.log(name);
+    select(userList, liEl);
+    history.pushState(name, null, name);
+  }
+});
+
+// history.pushState 로 히스토리가 변경 될 때, 노드 리스트의 클래스 수정
+window.addEventListener("popstate", (e) => {
+  const selectedUser = document.querySelector(
+    `.user-list [data-name=${e.state}]`
+  );
+  select(userList, selectedUser);
+});
+
+function select(ulEl, liEl) {
+  Array.from(ulEl.children).forEach((v) => v.classList.remove("selected"));
+  if (liEl) {
+    liEl.classList.add("selected");
+  }
+}
+```
+
+### Array from a NodeList
+
+반복가능한 객체를 얕은 복사해서 배열로 만들어 반환한다.
+(문자열, map, set...)
+
+```javascript
+// Create an array based on a property of DOM Elements
+const images = document.getElementsByTagName("img");
+const sources = Array.from(images, (image) => image.src);
+const insecureSources = sources.filter((link) => link.startsWith("http://"));
+```

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML Form 활용하기</title>
+  </head>
+  <body>
+    <form method="get" name="order-form">
+      <fieldset name="user-info">
+        <legend>사용자정보</legend>
+        이름: <input name="userName" type="text" /><br />
+        전화번호: <input name="tel" type="tel" />
+      </fieldset>
+      <fieldset name="product-info">
+        <legend>주문정보</legend>
+        제품명: <input name="productName" type="text" /><br />
+        색상:
+        <select name="color">
+          <option value="black">검은색</option>
+          <option value="yello">노랑색</option>
+        </select>
+      </fieldset>
+      <button type="reset">reset</button>
+      <button type="submit">submit</button>
+    </form>
+
+    <script>
+      const orderForm = document.forms["order-form"];
+      const userInfo = orderForm.elements["user-info"];
+      const productInfo = orderForm.elements["product-info"];
+
+      orderForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const { userName, tel } = userInfo.elements;
+        const { productName, color } = productInfo.elements;
+
+        const details = [userName, tel, productName, color].map(
+          (el) => el.value
+        );
+
+        console.log(details);
+        // console.log("subtmit");
+      });
+    </script>
+  </body>
+</html>

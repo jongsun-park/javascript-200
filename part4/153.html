@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>문서 이동하기 예제</title>
+  </head>
+  <body>
+    <div id="location"></div>
+    <div>
+      <button id="naver-btn">네이버로 이동</button>
+    </div>
+    <script>
+      const pageLocation = console.log(location);
+
+      let text = ``;
+
+      for (const key in location) {
+        if (location.hasOwnProperty(key) && location[key]) {
+          const element = location[key];
+          text += `${key} : ${location[key]} <br/>`;
+        }
+      }
+
+      document.querySelector("#location").innerHTML = text;
+
+      document.querySelector("#naver-btn").addEventListener("click", () => {
+        location.assign("https://naver.com");
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>사용자 이벤트 생성하기</title>
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    <style>
+      .error-box {
+        transition-duration: 200ms;
+        background: green;
+        color: white;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="order-area">
+      <div>상품정보: 노트북 1대</div>
+      <button id="order-btn">주문하기</button>
+    </div>
+
+    <script>
+      function buildError(title, message) {
+        // console.log(`${title}, ${message}`);
+
+        const errorBox = document.createElement("div");
+        const id = Math.ceil(Math.random() * 1000);
+
+        errorBox.className = "error-box";
+        errorBox.innerHTML = `
+            <span class="close-btn">close</span><br/>
+            <h1>${title}</h1>
+            <p>${message}</p>
+        `;
+        errorBox.id = id;
+        errorBox
+          .querySelector("span.close-btn")
+          .addEventListener("click", (e) => {
+            // custom event
+
+            const clsoeEvent = new CustomEvent("close", {
+              bubbles: true,
+              detail: { id, message },
+            });
+
+            errorBox.dispatchEvent(clsoeEvent);
+            errorBox.remove();
+
+            // document.querySelector("span.close-btn");
+            //   .addEventListener("click", () => {
+            //      errorBox.remove()
+            //   });
+          });
+
+        document.body.prepend(errorBox);
+
+        return errorBox;
+      }
+
+      document.querySelector("#order-btn").addEventListener("click", (e) => {
+        const alertEl = buildError("에러", "로그인을 해주세요");
+        alertEl.addEventListener("close", (e) => {
+          console.log(e.detail);
+          console.log("error 창을 닫습니다.");
+        });
+      });
+    </script>
+  </body>
+</html>

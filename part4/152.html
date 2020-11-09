@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM 네비게이션 예제</title>
+    <style>
+      section {
+        min-height: 500px;
+        background: #eee;
+      }
+
+      .articles {
+        min-height: 2000px;
+        background: #ccc;
+      }
+      nav {
+        background: black;
+        padding: 10px;
+      }
+      /* nav.fixed {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+      } */
+      nav a {
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="hero">
+      <h1>스크롤을 아래로 내려보세요</h1>
+    </section>
+    <nav>
+      <a href="/">자바스크립트 200제</a>
+    </nav>
+    <section class="articles"></section>
+
+    <script>
+      const select = (selector) => document.querySelector(selector);
+      const nav = select("nav");
+
+      window.addEventListener("scroll", () => {
+        // console.log("scrolled");
+        // console.log(window.pageYOffset);
+        // console.log(nav.offsetTop);
+
+        // if (window.pageYOffset > nav.offsetTop) {
+        //   nav.classList.add("fixed");
+        // } else {
+        //   nav.classList.remove("fixed");
+        // }
+        const navTopOffset = nav.offsetTop;
+        if (window.pageYOffset >= navTopOffset) {
+          nav.style.position = "fixed";
+          nav.style.top = 0;
+          nav.style.left = 0;
+          nav.style.right = 0;
+        } else {
+          nav.style.position = "";
+          nav.style.top = "";
+        }
+        // console.log(nav.offsetTop);
+      });
+    </script>
+  </body>
+</html>

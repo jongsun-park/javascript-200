@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>이벤트 위임 처리하기 예제</title>
+    <!-- <style>
+      .notification {
+        position: absolute;
+        background: red;
+        min-height: 10px;
+        bottom: 0;
+        right: 0;
+        left: 0;
+      }
+    </style> -->
+  </head>
+  <body>
+    <h2>할 일</h2>
+    <ul id="todo-list">
+      <li>공부하기 <button class="remove-button">⨉</button></li>
+      <li>장보기 <button class="remove-button">⨉</button></li>
+      <li>숙제하기 <button class="remove-button">⨉</button></li>
+    </ul>
+
+    <script>
+      document.querySelector("ul#todo-list").addEventListener("click", (e) => {
+        if (e.target.className.indexOf("remove-button")) {
+          return;
+        }
+        const li = e.target.closest("li");
+        console.log(`${li.innerText} 삭제`);
+        // notification.show(`${li.innerText} 삭제 되었습니다.`);
+        li.remove();
+      });
+
+      // class Noti {
+      //   constructor() {
+      //     this.noti = document.createElement("div");
+      //     this.noti.classList.add("notification");
+      //     document.body.appendChild(this.noti);
+      //   }
+      //   show(message = "") {
+      //     console.log(message);
+      //     this.noti.innerText = message;
+      //     setTimeout(() => {
+      //       notification.show("");
+      //     }, 1000);
+      //   }
+      // }
+
+      // const notification = new Noti();
+    </script>
+  </body>
+</html>
