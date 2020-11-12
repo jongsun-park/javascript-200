@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>로컬 파일을 브라우저에서 읽기</title>
+    <link rel="stylesheet" href="156.css" />
+  </head>
+  <body>
+    <div id="file-box" class="dot-box">
+      이미지 파일을 선택한 후 이곳에 끌어서 놓아주세요
+    </div>
+    <output id="result"></output>
+    <script>
+      const dropZone = document.getElementById("file-box");
+      //   console.log(dropZone);
+      dropZone.addEventListener("dragover", (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        console.log("dragover");
+      });
+      dropZone.addEventListener("drop", (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        const files = e.dataTransfer.files; // FileList
+        console.log("drop");
+        console.log(e.dataTransfer);
+        console.log(files);
+        Array.from(files)
+          .filter((file) => file.type.match("image.*")) // file {lastModified, lastModifiedDate, name, size, type, webkitTraltivePath}
+          .forEach((file) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              //   console.log("reader event", e);
+              const imgEl = document.createElement("img");
+              imgEl.src = e.target.result;
+              imgEl.title = file.name;
+              document.getElementById("result").appendChild(imgEl);
+            };
+            reader.readAsDataURL(file);
+          });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>formData 예제</title>
+  </head>
+  <body>
+    <form id="myForm" name="myForm">
+      <div>
+        <label for="username">Enter name:</label>
+        <input type="text" id="username" name="username" />
+      </div>
+      <div>
+        <label for="useracc">Enter account number:</label>
+        <input type="text" id="useracc" name="useracc" />
+      </div>
+      <div>
+        <label for="userfile">Upload file:</label>
+        <input type="file" id="userfile" name="userfile" />
+      </div>
+      <input type="submit" value="Submit!" />
+    </form>
+    <script>
+      const myForm = document.querySelector("#myForm");
+      const inputs = myForm.querySelectorAll("input");
+
+      //   console.log(names);
+
+      myForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let myForm = document.getElementById("myForm");
+        let formData = new FormData(myForm);
+
+        // console.log(formData);
+
+        const names = Array.from(inputs)
+          .filter((input) => input.name)
+          .map((input) => input.name);
+
+        names.forEach((name) => {
+          formData[name] = formData.get(name);
+        });
+
+        // window.parent.postMessage(formData, "*");
+      });
+    </script>
+  </body>
+</html>

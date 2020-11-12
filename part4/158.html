@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>iframe 메시지 교환하기</title>
+  </head>
+  <body>
+    <div>
+      <label>결제금액: <b>20000원</b></label>
+      <br />
+      <button id="checkout-btn">카드입력</button>
+    </div>
+    <iframe
+      width="500px"
+      height="200px"
+      frameborder="0"
+      id="card-payment"
+    ></iframe>
+  </body>
+  <script>
+    const iWindow = document.querySelector("#card-payment").contentWindow;
+    document.querySelector("#checkout-btn").addEventListener("click", (e) => {
+      iWindow.location = "payment.html";
+    });
+
+    window.addEventListener("message", (e) => {
+      if (e.data.holderName) console.log(e.data);
+      //   MessageEvent {data, origin, target, ...}
+      console.log(e.data);
+    });
+  </script>
+</html>

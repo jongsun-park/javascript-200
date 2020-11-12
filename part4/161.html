@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>웹워커 예제</title>
+  </head>
+  <body>
+    <div>
+      <input type="number" id="number" />
+      <button id="start-btn">파보나치 수열 시작</button>
+    </div>
+    <div id="result"></div>
+    <script>
+      const result = document.getElementById("result");
+      let isCalculation = false;
+      if (window.Worker) {
+        const fibonacciWorker = new Worker("fibonacci.js");
+        document.getElementById("start-btn").addEventListener("click", (e) => {
+          if (isCalculation) {
+            return;
+          }
+          const value = document.getElementById("number").value;
+          fibonacciWorker.postMessage({ num: value });
+          result.innerHTML = "계산 중...";
+          isCalculation = true;
+        });
+        fibonacciWorker.onmessage = function (e) {
+          result.innerHTML = e.data;
+          isCalculation = false;
+        };
+        fibonacciWorker.onerror = function (error) {
+          console.error("에러발생", error.message);
+          isCalculation = false;
+        };
+      }
+    </script>
+  </body>
+</html>

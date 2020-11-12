@@ -1,0 +1,51 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XMLRequest 예제</title>
+  </head>
+  <body>
+    <div id="user"></div>
+    <script>
+      function httpGet(url, successCallback, errorCallback) {
+        const req = new XMLHttpRequest();
+
+        // status 에 따라 성공 / 실패 콜백 실행 하기
+        req.onload = () => {
+          if (req.status >= 200 && req.status < 300) {
+            successCallback(req.response);
+          } else {
+            errorCallback(new Error(req.statusText));
+          }
+        };
+
+        // 에러 콜백 초기화
+        req.onerror = errorCallback;
+
+        // 요청 초기화
+        req.open("GET", url);
+        req.setRequestHeader("Accept", "application/json");
+
+        // 실행
+        req.send();
+      }
+
+      const userEl = document.getElementById("user");
+
+      // data -> req.response
+      const successHnadler = (data) => {
+        const user = JSON.parse(data); // JSON 문자열을 객체로 전환
+        userEl.innerHTML = `<img src=${user.avatar_url}/><br> 사용자이름: ${user.login}, 깃헙주소: ${user.html_url}`;
+      };
+      const errorHnadler = (error) => {
+        console.error(error);
+      };
+
+      httpGet(
+        "https://api.github.com/users/jeado",
+        successHnadler,
+        errorHnadler
+      );
+    </script>
+  </body>
+</html>

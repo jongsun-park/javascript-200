@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fetch Api 예제</title>
+  </head>
+  <body>
+    <div id="user"></div>
+    <script>
+      const userEl = document.querySelector("#user");
+      const url = "https://api.github.com/users/jeado";
+      const reqPromise = fetch(url, {
+        headers: { Accept: "application/json" },
+        method: "GET",
+      });
+
+      reqPromise
+        .then((req) => {
+          if (req.status >= 200 && req.status < 300) {
+            return req.json();
+          } else {
+            return Promise.reject(new Error(`Get status ${req.status}`));
+          }
+        })
+        .then((user) => {
+          console.log(user);
+          return (userEl.innerHTML = `<img src=${user.avatar_url}/> <br/> 사용자이름 : ${user.login}, 깃헙주소: ${user.html_url}`);
+        })
+        .catch((error) => console.error(error));
+    </script>
+  </body>
+</html>
