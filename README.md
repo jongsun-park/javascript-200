@@ -780,4 +780,92 @@ const removeDir = (path, callback) => {
 };
 ```
 
-## 174 Http 서버 띄우기
+## 175 Http 서버 띄우기
+
+```javascript
+const http = require("http");
+
+const hostname = "127.0.0.1";
+const port = 3000;
+
+const server = http.createServer((req, res) => {
+  res.statusCode = 200;
+  res.setHeader("Content-type", "text/plain");
+  res.end("Hello! Node.js HTTP Server");
+});
+
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
+```
+
+## 176 웹 API 작성하기 1
+
+API (Application Programming Interface)
+
+- 여러 다른 애플리케이션들이 연결되어 동일한 데이터를 주고받을 수 있는 인터페이스
+- 요청과 응답해주는 서비스를 위해 제공 되는 인터페이스
+
+module http
+
+- `http.createServer( (req, res) => { ... })` //
+  - TCP, IPC 서버 생성
+  - net.server 인스턴스 반환
+  - 서버를 생성하고 이후 요청 이벹느에 응답하여 resquest와 response를 콜백함수로 전달.
+- `req.method` // GET, POST, PUT, DELETE
+- `req.url`
+  - api로 요청된 url의 path 정보
+  - `http://host[:port][/][path][?query]`
+- `res.setHeader('Content-type', 'text/plain')`
+- `res.writeHead(200)`
+- `res.write('<html>...')` // 처음 write 메서드가 실행 되면 헤더 정보와 첫 본문 정보를 클라이언트로 전송한다. 스트리밍 되는 것을 가정하고, 새 데이터를 보낼 수 있다.
+- `res.end('...</html>')` // 마지만 본문 정보를 보내고, 응답 전송을 완료한다.
+
+module url
+
+- url 문자열 또는 객체형을 다루는 유틸리티 모듈
+- `url.parse( req.url, true).qeury` // {qs1: '1', qs2: '2'}
+  - 두번째 매개변수로 true를 입력하면 json 형태로 반환한다.
+
+## 177 웹 API 작성하기 2
+
+queryString 모듈
+
+- url 객체의 query를 다른 형태로 지정 뱐환하는 함수를 제공한다.
+- qs.parse(body): 해당 이벤트로 수집된 문자열을 객체 형식으로 파싱한다.
+
+res.on('type', listener)
+
+- 해당 이름의 이벤트에 리스너를 등록 하고 이벤트가 생성될 때마다 실행
+- 버퍼 형식으로 전달되고, 이벤트가 발생 했을 때 문자열로 형변환 되어 결과값을 받을 수 있다.
+
+## 178 API 호출하기
+
+`http.get( url, res => {...})`
+
+- GET 메소드의 url을 요청하는 함수
+- body 데이터 전송 없이 간단하게 요청 한다.
+
+```javaScript
+http.get("http://localhost:3000", (res) => {
+  let data = "";
+  res.on("data", function (chunk) {
+    data += chunk;
+    console.log("data of res.on ===> ", data);
+  });
+  res.on("end", function () {
+    try {
+      console.log("end of res.on ===> ", data);
+      return data;
+    } catch (err) {
+      if (err) console.log(err);
+    }
+  });
+});
+```
+
+## 170 외부 패키지 설치하기
+
+## 180 request로 간편하게 api 요청하기
+
+## 181 cheerio로 크롤링 하기
