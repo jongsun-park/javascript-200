@@ -1,0 +1,15 @@
+.slider {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.item-wrapper {
+  display: flex;
+  flex-direction: row;
+  max-width: 500px;
+  /* overflow: scroll; */
+  overflow: hidden;
+  scroll-behavior: smooth;
+}
